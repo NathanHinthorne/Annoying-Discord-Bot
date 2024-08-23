@@ -12,11 +12,8 @@ import asyncio
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
-USER_ID_NATAN = os.getenv('USER_ID_NATAN')
-USER_ID_ARSH = os.getenv('USER_ID_ARSH')
-USER_ID_NATHAN = os.getenv('USER_ID_NATHAN')
-CHANNEL_ID = os.getenv('CHANNEL_ID')
-GUILD_ID = os.getenv('GUILD_ID')
+CHANNEL_ID = "" # blank until user gives input
+GUILD_ID = "" # blank until user gives input
 startup_gif_url = "https://tenor.com/view/awake-woke-elmo-i-has-awoken-wake-gif-16298489"
 shutdown_gif_url = "https://tenor.com/view/fade-away-peace-out-bye-gif-11671828036190676036"
 
@@ -24,6 +21,8 @@ intents = discord.Intents.default()
 intents.messages = True
 intents.message_content = True
 intents.guild_messages = True
+
+TARGETED_USERS = []
 
 class MyBot(commands.Bot):
     def __init__(self, *args, **kwargs):
@@ -38,10 +37,7 @@ class MyBot(commands.Bot):
 
     @commands.Cog.listener()
     async def on_message(self, message):
-        if (message.author.id == int(USER_ID_NATAN) or 
-            message.author.id == int(USER_ID_ARSH) or
-            message.author.id == int(USER_ID_NATHAN)
-            ) and message.channel.id == int(CHANNEL_ID):
+        if (message.channel.id == int(CHANNEL_ID)) and (str(message.author.id) in TARGETED_USERS):
             gif_urls = [
                 "https://tenor.com/bgPeD.gif", # goose dance
                 "https://tenor.com/quxxSlANeOt.gif", # mario dance
@@ -86,11 +82,17 @@ class BotApp:
         self.status_text = scrolledtext.ScrolledText(root, wrap=tk.WORD, width=50, height=10)
         self.status_text.pack(padx=10, pady=10)
         
-        self.start_button = tk.Button(root, text="Start Bot", command=self.start_bot)
-        self.start_button.pack(pady=10)
+        button_frame = tk.Frame(root)
+        button_frame.pack(pady=10)
         
-        self.stop_button = tk.Button(root, text="Stop Bot", command=self.stop_bot, state=tk.DISABLED)
-        self.stop_button.pack(pady=10)
+        self.start_button = tk.Button(button_frame, text="Start Bot", command=self.start_bot, bg="#32CD32")  # Lime Green
+        self.start_button.pack(side=tk.LEFT, padx=5)
+        
+        self.stop_button = tk.Button(button_frame, text="Stop Bot", command=self.stop_bot, state=tk.DISABLED, bg="#FF6666")  # Lighter Red
+        self.stop_button.pack(side=tk.LEFT, padx=5)
+        
+        self.options_button = tk.Button(button_frame, text="Options", command=self.open_options_window)
+        self.options_button.pack(side=tk.LEFT, padx=5)
         
         self.bot_thread = None
 
@@ -108,21 +110,52 @@ class BotApp:
     def stop_bot(self):
         self.update_status("Stopping bot...")
         self.start_button.config(state=tk.NORMAL)
-        self.stop_button.config(state=tk.DISABLED)\
+        self.stop_button.config(state=tk.DISABLED)
         
-        # asyncio.run_coroutine_threadsafe(self.send_shutdown_gif(), bot.loop).result()
-
         bot.loop.stop()
-
-    #! function is not working
-    async def send_shutdown_gif(self):
-        channel = bot.get_channel(int(CHANNEL_ID))
-        if channel:
-            await channel.send(shutdown_gif_url)
-            self.update_status(f'Sent shutdown GIF: {shutdown_gif_url}')
 
     def run_bot(self):
         bot.run(TOKEN)
+
+    def open_options_window(self):
+        options_window = tk.Toplevel(self.root)
+        options_window.title("Options")
+        options_window.geometry("300x400")  # Set initial size of the options window
+
+        tk.Label(options_window, text="GUILD_ID:").pack(pady=5)
+        self.guild_id_entry = tk.Entry(options_window)
+        self.guild_id_entry.pack(pady=5)
+        self.guild_id_entry.insert(0, GUILD_ID)
+
+        tk.Label(options_window, text="CHANNEL_ID:").pack(pady=5)
+        self.channel_id_entry = tk.Entry(options_window)
+        self.channel_id_entry.pack(pady=5)
+        self.channel_id_entry.insert(0, CHANNEL_ID)
+
+        tk.Label(options_window, text="TARGETED_USERS:").pack(pady=5)
+        self.targeted_users_frame = tk.Frame(options_window)
+        self.targeted_users_frame.pack(pady=5)
+
+        self.targeted_user_entries = []
+        self.add_targeted_user_entry()
+
+        add_user_button = tk.Button(options_window, text="Add User", command=self.add_targeted_user_entry)
+        add_user_button.pack(pady=5)
+
+        save_button = tk.Button(options_window, text="Save", command=self.save_options, bg="#32CD32")  # Lime Green
+        save_button.pack(pady=10)
+
+    def add_targeted_user_entry(self):
+        entry = tk.Entry(self.targeted_users_frame)
+        entry.pack(pady=2)
+        self.targeted_user_entries.append(entry)
+
+    def save_options(self):
+        global GUILD_ID, CHANNEL_ID, TARGETED_USERS
+        GUILD_ID = self.guild_id_entry.get()
+        CHANNEL_ID = self.channel_id_entry.get()
+        TARGETED_USERS = [entry.get() for entry in self.targeted_user_entries if entry.get()]
+        self.update_status(f"Updated GUILD_ID to {GUILD_ID}, CHANNEL_ID to {CHANNEL_ID}, and TARGETED_USERS to {TARGETED_USERS}")
 
 root = tk.Tk()
 app = BotApp(root)

@@ -16,3 +16,17 @@ __pycache__/
 *.pywz
 # ignore compiled python files
 *.pyzw
+# ignore compiled python files
+*.pyc
+# ignore compiled python files
+*.pyo
+# ignore compiled python files
+*.pyd
+# ignore compiled python files
+*.pyw
+# ignore compiled python files
+*.pyz
+# ignore compiled python files
+*.pywz
+# ignore compiled python files
+*.pyzw

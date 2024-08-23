@@ -1,6 +1,8 @@
-# My Discord Bot
+# The Aaron Annihilator (Discord Bot)
 
 This is a simple Discord bot that was made to listen for messages from a specific user *cough* Aaron *cough*. If the message is a gif, the bot will randomly pick a gif from a collection and send it in the same channel.
+
+Now you too can harness the power of "The Aaron Annihilator"!
 
 ## Setup
 
@@ -14,9 +16,6 @@ This is a simple Discord bot that was made to listen for messages from a specifi
 
 ``` env
 DISCORD_TOKEN=PLACEHOLDER123
-USER_ID_NATAN=PLACEHOLDER123
-USER_ID_ARSH=PLACEHOLDER123
-USER_ID_NATHAN=PLACEHOLDER123
 CHANNEL_ID=PLACEHOLDER123
 GUILD_ID=PLACEHOLDER123
 ```
