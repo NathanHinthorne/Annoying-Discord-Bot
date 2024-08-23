@@ -122,17 +122,17 @@ class BotApp:
         options_window.title("Options")
         options_window.geometry("300x400")  # Set initial size of the options window
 
-        tk.Label(options_window, text="GUILD_ID:").pack(pady=5)
+        tk.Label(options_window, text="SERVER ID:").pack(pady=5)
         self.guild_id_entry = tk.Entry(options_window)
         self.guild_id_entry.pack(pady=5)
         self.guild_id_entry.insert(0, GUILD_ID)
 
-        tk.Label(options_window, text="CHANNEL_ID:").pack(pady=5)
+        tk.Label(options_window, text="CHANNEL ID:").pack(pady=5)
         self.channel_id_entry = tk.Entry(options_window)
         self.channel_id_entry.pack(pady=5)
         self.channel_id_entry.insert(0, CHANNEL_ID)
 
-        tk.Label(options_window, text="TARGETED_USERS:").pack(pady=5)
+        tk.Label(options_window, text="TARGETED USERS:").pack(pady=5)
         self.targeted_users_frame = tk.Frame(options_window)
         self.targeted_users_frame.pack(pady=5)
 
