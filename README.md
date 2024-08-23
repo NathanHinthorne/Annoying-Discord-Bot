@@ -6,13 +6,15 @@ Now you too can harness the power of "The Aaron Annihilator"!
 
 ## Setup
 
-1. Clone this repository to your local machine.
+1. Invite The Aaron Annihilator bot to your server using [this link](https://discord.com/oauth2/authorize?client_id=1184186946818412554&permissions=67233856&integration_type=0&scope=bot).
 
-2. Install the required Python dependencies by running `pip install -r requirements.txt`.
+2. Clone this repository to your local machine.
 
-3. Create a bot on the Discord developer portal, get the bot token, and add the bot to your server.
+3. Install the required Python dependencies by running `pip install -r requirements.txt`.
 
-4. Make a `.env` file that looks like the following:
+4. Create a bot on the Discord developer portal, get the bot token, and add the bot to your server.
+
+5. Make a `.env` file that looks like the following:
 
 ``` env
 DISCORD_TOKEN=PLACEHOLDER123
